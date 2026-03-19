@@ -1,0 +1,35 @@
+services:
+  - type: web
+    name: n8n-transcriber
+    runtime: image
+    repo: https://github.com/melp2079/n8n-transcriber
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: N8N_HOST
+        value: 0.0.0.0
+      - key: N8N_PORT
+        value: 5678
+      - key: N8N_PROTOCOL
+        value: https
+      - key: NODE_ENV
+        value: production
+      - key: GENERIC_TIMEZONE
+        value: America/New_York
+      - key: N8N_ENCRYPTION_KEY
+        generateValue: true
+      - key: N8N_DISABLE_PRODUCTION_MAIN_PROCESS
+        value: true
+      - key: EXECUTIONS_PROCESS
+        value: main
+      - key: NODE_OPTIONS
+        value: --max-old-space-size=384
+      - key: WHISPER_MODEL
+        value: Xenova/whisper-tiny.en
+      - key: N8N_REINSTALL_MISSING_PACKAGES
+        value: "true"
+    disk:
+      name: n8n-data
+      mountPath: /home/node/.n8n
+      sizeGB: 1
+    healthCheckPath: /healthz
